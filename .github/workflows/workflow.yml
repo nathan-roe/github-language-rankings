@@ -47,7 +47,12 @@ jobs:
         run: |
           set -e
 
-          if git diff --quiet -- visualization.png; then
+          if [ ! -f visualization.png ]; then
+            echo "visualization.png was not generated (file not found)."
+            exit 0
+          fi
+
+          if [ -z "$(git status --porcelain -- visualization.png)" ]; then
             echo "No changes to visualization.png"
             exit 0
           fi
